@@ -4,11 +4,14 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
+import android.support.v4.hardware.display.DisplayManagerCompat;
+import android.support.v7.content.res.AppCompatResources;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * create by Weavey
@@ -16,11 +19,12 @@ import android.view.ViewGroup;
  * TODO
  */
 
-public class Utils {
+public final class Utils {
 
+    private Utils() {}
 
     public static Drawable getDrawble(Context conetxt, @DrawableRes int id){
-        return ContextCompat.getDrawable(conetxt,id);
+        return AppCompatResources.getDrawable(conetxt, id); //It solves problem when using "vector drawable compat"
     }
 
     public static int getColor(Context conetxt,@ColorRes int id){
@@ -31,15 +35,23 @@ public class Utils {
         return  conetxt.getResources().getString(id);
     }
 
-    public static int sp2px(Context context,float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics()
-                .scaledDensity;
+    public static int sp2px(Context context, float spValue) {
+        final float fontScale = getDisplayMetrics(context).scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
-    public static int dp2px(Context context,int dip) {
-        final float scale =  context.getResources().getDisplayMetrics().density;
+    public static int dp2px(Context context, int dip) {
+        final float scale = getDisplayMetrics(context).density;
         return (int) (dip * scale + 0.5f);
+    }
+
+    @NonNull
+    private static DisplayMetrics getDisplayMetrics(Context context) {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        Display[] displays = DisplayManagerCompat.getInstance(context).getDisplays();
+        Display display = displays[0];
+        display.getMetrics(displaymetrics);
+        return displaymetrics;
     }
 
     public static <T extends View> T findViewById(View v, int id) {

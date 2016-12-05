@@ -3,7 +3,6 @@ package com.weavey.loading.lib;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
@@ -30,7 +29,7 @@ public class LoadingLayout extends FrameLayout {
     public final static int Loading = 4;
     private int state;
 
-    private Context mContext;
+    private final Context mContext;
     private View loadingPage;
     private View errorPage;
     private View emptyPage;
@@ -53,7 +52,7 @@ public class LoadingLayout extends FrameLayout {
     private boolean isFirstVisible; //是否一开始显示contentview，默认不显示
 
     //配置
-    private static Config mConfig = new Config();
+    private static final Config mConfig = new Config();
     private static String emptyStr = "暂无数据";
     private static String errorStr = "加载失败，请稍后重试···";
     private static String netwrokStr = "无网络连接，请检查网络···";
